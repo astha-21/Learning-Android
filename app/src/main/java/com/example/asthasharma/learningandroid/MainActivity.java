@@ -8,7 +8,6 @@ import android.widget.EditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.view.View.OnClickListener;
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
     private EditText emailEditText;
@@ -52,21 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     // validating password with retype password
     private boolean isValidPassword(String pass) {
-        if ((pass != null) && (pass.length() > 6))
-        {
-            return true;
-        }
+        if (pass != null && pass.length() > 6) return true;
         return false;
     }
 
-
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-
-    }
 
 }
