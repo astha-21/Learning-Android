@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">Learning Android</string>
-    <string name="edit_email">Enter Email</string>
-    <string name="edit_password">Enter Password</string>
-    <string name="button_send">Sign In</string>
-    <string name="signIn">SignIn</string>
-    <string name="edit_add">find</string>
-    <string name="edit_delete">Delete</string>
-    <string name="edit_update">Update</string>
+    <string name="name">Enter Name</string>
+    <string name="email">Enter Email</string>
+    <string name="password">Enter Password</string>
+    <string name="add_user">Add User</string>
 </resources>

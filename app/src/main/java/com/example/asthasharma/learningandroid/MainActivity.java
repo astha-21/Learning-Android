@@ -1,59 +1,46 @@
 package com.example.asthasharma.learningandroid;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
-    private EditText emailEditText;
-    private EditText passEditText;
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+public class MainActivity extends AppCompatActivity implements FragmentInteractionListener {
+    DatabaseHandler dbDatabaseHandler;
+    CustomAdapterView customAdapterView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        emailEditText = findViewById(R.id.editText1);
-        passEditText = findViewById(R.id.editText);
-
-        findViewById(R.id.button).setOnClickListener(new OnClickListener() {
-
+        dbDatabaseHandler=new DatabaseHandler(this);
+        ListView listView=findViewById(R.id.contact_list);
+        customAdapterView=new CustomAdapterView(this);
+        customAdapterView.setData(dbDatabaseHandler.getAllUser());
+        listView.setAdapter(customAdapterView);
+        Button add_user=findViewById(R.id.user_add_button);
+        add_user.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-
-                final String email = emailEditText.getText().toString();
-                if (!isValidEmail(email)) {
-                    emailEditText.setError("Invalid Email");
-                }
-
-                final String pass = passEditText.getText().toString();
-                if (!isValidPassword(pass)) {
-                    passEditText.setError("Invalid Password");
-                }
-
+            public void onClick(View v) {
+                AlertDialogFragment alertDialogFragment=new AlertDialogFragment();
+                alertDialogFragment.show(getSupportFragmentManager(),"Registerialog");
             }
         });
+
     }
-
-    // validating email id
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+    @Override
+    public void registerUser(String name,String email, String password){
+        Adapter adapter=new Adapter();
+        adapter.setName(name);
+        adapter.setEmail(email);
+        adapter.setPassword(password);
+        dbDatabaseHandler.addUser(adapter);
+        customAdapterView.setData(dbDatabaseHandler.getAllUser());
+        customAdapterView.notifyDataSetChanged();
     }
+    @Override
+    public void deleteUser(int id){
+        dbDatabaseHandler.deleteUser(id);
 
-    // validating password with retype password
-    private boolean isValidPassword(String pass) {
-        if (pass != null && pass.length() > 6) return true;
-        return false;
     }
-
-
 }
