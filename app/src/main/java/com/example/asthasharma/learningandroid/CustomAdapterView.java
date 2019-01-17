@@ -10,16 +10,22 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * Created by admin on 8/23/2016.
+ */
 public class CustomAdapterView extends BaseAdapter {
-    List<Adapter> data;
+
+    List<UserModel> data;
     Context c;
-    public void setData(List<Adapter> data){
-        this.data=data;
+
+    public void setData(List<UserModel> data) {
+        this.data = data;
     }
 
     public CustomAdapterView(Context c) {
         this.c = c;
     }
+
     @Override
     public int getCount() {
         if(data!=null)
@@ -33,8 +39,9 @@ public class CustomAdapterView extends BaseAdapter {
     public Object getItem(int position) {
         if(data!=null)
         {
-            Adapter adapter=data.get(position);
-            return adapter;
+
+            UserModel userModel = data.get(position);
+            return userModel;
         }
         return null;
     }
@@ -43,34 +50,35 @@ public class CustomAdapterView extends BaseAdapter {
     public long getItemId(int position) {
         if(data!=null)
         {
-            Adapter adapter=data.get(position);
-            return adapter.getId();
+
+            UserModel userModel = data.get(position);
+            return userModel.getId();
         }
         return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater layoutInflater=(LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v=layoutInflater.inflate(R.layout.list_item_view,null);
+        LayoutInflater layoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = layoutInflater.inflate(R.layout.list_item_view,null);
         if(data!=null)
         {
-            final Adapter adapter=data.get(position);
-            TextView nameTextView=v.findViewById(R.id.name_text);
-            TextView emailTextView=v.findViewById(R.id.email_text);
-            TextView passwordTextView=v.findViewById(R.id.password_text);
-            nameTextView.setText(adapter.getName());
-            emailTextView.setText(adapter.getEmail());
-            passwordTextView.setText(adapter.getPassword());
-            ImageButton delimagebutton=v.findViewById(R.id.delete_user_img);
-            delimagebutton.setOnClickListener(new View.OnClickListener() {
+
+            final UserModel userModel = data.get(position);
+            TextView nameTextView= (TextView) v.findViewById(R.id.name_text);
+            TextView emailTextView= (TextView) v.findViewById(R.id.email_text);
+            TextView numberTextView= (TextView) v.findViewById(R.id.number_text);
+            nameTextView.setText(userModel.getName());
+            emailTextView.setText(userModel.getEmail());
+            numberTextView.setText(userModel.getPhone_number());
+            ImageButton delImageButton= (ImageButton) v.findViewById(R.id.delete_user_img);
+            delImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((FragmentInteractionListener)c).deleteUser(adapter.getId());
+                    ((FragmentInteractionListener)c).deleteUser(userModel.getId());
                 }
             });
         }
         return v;
     }
 }
-
